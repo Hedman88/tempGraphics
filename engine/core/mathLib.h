@@ -8,6 +8,7 @@ using namespace std;
 ///A struct for vectors with 4 elements.
 ///
 ///Vectors can be initiated with 0, 3 or 4 arguments, in each case the vector will still have 4 elements but the ones excluded will be 0.
+
 struct Vector
 {
 	union {
@@ -19,10 +20,10 @@ struct Vector
 		};
 		float arr[4];
 	};
-	inline Vector();
+	inline Vector() = default;
 	inline Vector(float x, float y, float z);
 	inline Vector(float x, float y, float z, float w);
-	inline Vector& operator+(Vector b) {
+	inline Vector operator+(Vector b) {
 
 		Vector c(x, y, z);
 		c.x = x + b.x;
@@ -30,7 +31,7 @@ struct Vector
 		c.z = z + b.z;
 		return c;
 	}
-	inline Vector& operator-(Vector b) {
+	inline Vector operator-(Vector b) {
 
 		Vector c(x, y, z);
 		c.x = x - b.x;
@@ -38,7 +39,7 @@ struct Vector
 		c.z = z - b.z;
 		return c;
 	}
-	inline Vector& operator*(float scaleFactor) {
+	inline Vector operator*(float scaleFactor) {
 
 		Vector c(x, y, z);
 		c.x = x * scaleFactor;
@@ -67,9 +68,9 @@ struct Vector
 	inline void Print();
 };
 
-Vector::Vector() {
-	x = y = z = w = 0;
-}
+//Vector::Vector() {
+//	x = y = z = w = 0;
+//}
 
 Vector::Vector(float x, float y, float z) {
 	this->x = x;
@@ -135,12 +136,6 @@ void Vector::Print() {
 struct Matrix 
 {
 	union {
-		struct {
-			Vector x;
-			Vector y;
-			Vector z;
-			Vector w;
-		};
 		Vector data[4];
 		float data2[16];
 	};
@@ -155,7 +150,7 @@ struct Matrix
 	/// <param name="a"></param>
 	/// <returns></returns>
 	inline Matrix(Vector a[4]);
-	inline Matrix& operator*(Matrix m2) {
+	inline Matrix operator*(Matrix m2) {
 		Matrix m3 = Matrix();
 		/*for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -171,7 +166,7 @@ struct Matrix
 		}
 		return m3;
 	}
-	inline Vector& operator*(Vector v) {
+	inline Vector operator*(Vector v) {
 		Vector temp = Vector();
 		for (int j = 0; j < 4; j++) {
 			for (int k = 0; k < 4; k++) {
