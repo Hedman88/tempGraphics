@@ -5,6 +5,10 @@
 #include <sys/sysinfo.h>
 #include <fstream>
 #include <sys/utsname.h>
+#include <math.h>
+#include <sys/wait.h>
+#include <thread>
+#include <vector>
 
 int iModeFunc(){
     // Processors
@@ -43,17 +47,51 @@ int iModeFunc(){
     return 0;
 }
 
+unsigned long long SumCalc(){
+    unsigned long long sum = 0;
+    for(int i = 0; i < 20000; i++){
+        for(int j = 0; j < i; j++){
+            sum += sqrt(i*j);
+        }
+    }
+    std::cout << "Sum of calculations: " << sum << std::endl;
+    return sum;
+}
+
 int fModeFunc(int X){
     if(X == 0){
         return -1;
     }
 
+    int cpid;
+    for(int i = 0; i < X; i++){
+        cpid = fork();
+        if(cpid == 0){
+            std::cout << getpid() << std::endl;
+            SumCalc();
+            return 1;
+        }
+    }
+
+    std::cout << "Parent is finished, now assuming wait" << std::endl;
+    waitpid(cpid, nullptr, 0);
+    std::cout << "Parent finished waiting" << std::endl;
     return 0;
 }
 
 int tModeFunc(int X){
     if(X == 0){
         return -1;
+    }
+    std::vector<std::thread> threads;
+    for(int i = 0; i < X; i++){
+        threads.push_back(std::thread(SumCalc));
+    }
+
+    while(!threads.empty()){
+        std::cout << "joining thread" << std::endl;
+        threads.back().join();
+        threads.pop_back();
     }
     return 0;
 }
@@ -70,12 +108,22 @@ int main(int argc, char* argv[]){
     }
 
     if(strcmp(argv[1], "-f") == 0){
+        if(argc < 3){
+            std::cout << "Not enough arguments..." << std::endl;
+            return -1;
+        }
+        
         if(fModeFunc(atoi(argv[2])) == 0){
             std::cout << "Success!" << std::endl;
         }
     }
 
     if(strcmp(argv[1], "-t") == 0){
+        if(argc < 3){
+            std::cout << "Not enough arguments..." << std::endl;
+            return -1;
+        }
+
         if(tModeFunc(atoi(argv[2])) == 0){
             std::cout << "Success!" << std::endl;
         }
