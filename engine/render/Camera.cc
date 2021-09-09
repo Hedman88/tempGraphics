@@ -4,12 +4,12 @@
 #include <math.h>
 
 Camera::Camera(float FOV, float width, float height, float near, float far) {
-	this->pos = Vector(0, 0, -2);
+	this->pos = Vector(0, 0, 0);
 	this->rot = RotationZ(0);
 
 	float scale = 1 / tan(FOV * 0.5 * M_PI / 180);
 	this->P[0][0] = scale;
-	this->P[1][1] = scale;
+	this->P[1][1] = width/height / scale;
 	this->P[2][2] = -far / (far - near);
 	this->P[2][3] = -far * near / (far - near);
 	this->P[3][2] = -1;
@@ -35,7 +35,7 @@ void Camera::AddRot(Matrix addedRot) {
 }
 
 Matrix Camera::GetVPMatrix() {
-	Matrix temp = this->rot * PositionMat(this->pos);
+	Matrix temp = PositionMat(Vector(0,0,-2)) * this->rot * PositionMat(this->pos);
 	temp = this->P * temp;
 	return temp;
 }

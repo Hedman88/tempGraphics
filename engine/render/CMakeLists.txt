@@ -8,7 +8,10 @@ SET(files_render_display
 	MeshResource.h
 	MeshResource.cc
 	Camera.h
-	Camera.cc)
+	Camera.cc
+    stb_image.h
+    TextureResource.h
+    TextureResource.cc)
 SOURCE_GROUP("display" FILES ${files_render_display})
 
 

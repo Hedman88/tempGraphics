@@ -6,28 +6,35 @@
 #include "exampleapp.h"
 #include <cstring>
 #include "render/MeshResource.h"
+#include "render/TextureResource.h"
 #include "render/Camera.h"
 #include "core/mathLib.h"
+#include "stb_image.h"
 
 const GLchar* vs =
 "#version 430\n"
 "layout(location=0) in vec4 pos;\n"
 "layout(location=1) in vec4 color;\n"
+"layout(location=2) in vec2 uvIn;\n"
 "layout(location=0) out vec4 Color;\n"
+"layout(location=1) out vec2 uvOut;\n"
 "uniform mat4 matrix;\n"
 "void main()\n"
 "{\n"
 "	gl_Position = matrix * pos;\n"
 "	Color = color;\n"
+"   uvOut = uvIn;\n"
 "}\n";
 
 const GLchar* ps =
 "#version 430\n"
 "layout(location=0) in vec4 color;\n"
+"layout(location=1) in vec2 uvIn;\n"
 "out vec4 Color;\n"
+"uniform sampler2D image;\n"
 "void main()\n"
 "{\n"
-"	Color = color;\n"
+"	Color = texture(image, uvIn);\n"
 "}\n";
 
 using namespace Display;
@@ -145,64 +152,9 @@ ExampleApp::Run()
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	MeshResource mr = MeshResource();
-	Vertex vertices[24] = {	
-		// Front
-		Vertex{Vector(-0.5, -0.5, 0.5), Vector(1,0,0,1)},
-		Vertex{Vector(-0.5, 0.5, 0.5), Vector(1,0,0,1)},
-		Vertex{Vector(0.5, -0.5, 0.5), Vector(1,0,0,1)},
-		Vertex{Vector(0.5, 0.5, 0.5), Vector(1,0,0,1)},
-
-		// Left
-		Vertex{Vector(-0.5, -0.5, 0.5), Vector(0,1,0,1)},
-		Vertex{Vector(-0.5, 0.5, 0.5), Vector(0,1,0,1)},
-		Vertex{Vector(-0.5, -0.5, -0.5), Vector(0,1,0,1)},
-		Vertex{Vector(-0.5, 0.5, -0.5), Vector(0,1,0,1)},
-
-		// Right
-		Vertex{Vector(0.5, -0.5, -0.5), Vector(0,0,1,1)},
-		Vertex{Vector(0.5, 0.5, -0.5), Vector(0,0,1,1)},
-		Vertex{Vector(0.5, -0.5, 0.5), Vector(0,0,1,1)},
-		Vertex{Vector(0.5, 0.5, 0.5), Vector(0,0,1,1)},
-
-		// Over
-		Vertex{Vector(-0.5, 0.5, -0.5), Vector(1,1,1,1)},
-		Vertex{Vector(-0.5, 0.5, 0.5), Vector(1,1,1,1)},
-		Vertex{Vector(0.5, 0.5, -0.5), Vector(1,1,1,1)},
-		Vertex{Vector(0.5, 0.5, 0.5), Vector(1,1,1,1)},
-
-		// Under
-		Vertex{Vector(-0.5, -0.5, 0.5), Vector(0,0,0,1)},
-		Vertex{Vector(-0.5, -0.5, -0.5), Vector(0,0,0,1)},
-		Vertex{Vector(0.5, -0.5, 0.5), Vector(0,0,0,1)},
-		Vertex{Vector(0.5, -0.5, -0.5), Vector(0,0,0,1)},
-
-		// Back
-		Vertex{Vector(-0.5, -0.5, -0.5), Vector(1,0,1,1)},
-		Vertex{Vector(-0.5, 0.5, -0.5), Vector(1,0,1,1)},
-		Vertex{Vector(0.5, -0.5, -0.5), Vector(1,0,1,1)},
-		Vertex{Vector(0.5, 0.5, -0.5), Vector(1,0,1,1)}
-		};
-	Index indices[12] = {
-		Index{0,1,3},
-		Index{0,2,3},
-
-		Index{4,5,7},
-		Index{4,6,7},
-		
-		Index{8,9,11},
-		Index{8,10,11},
-		
-		Index{12,13,15},
-		Index{12,14,15},
-		
-		Index{16,17,19},
-		Index{16,18,19},
-		
-		Index{20,21,23},
-		Index{20,22,23}
-	};
-	mr.UploadToGPU(vertices, 24, indices, 12);
+	MeshResource mr = MeshResource().Cube();
+    TextureResource tr = TextureResource();
+    tr.LoadFromFile("../../../assets/textures/diceTexture.png");
 
 	Vector v[4] = {
 		Vector(cosf(0.785), -sinf(0.785), 0, 0),
@@ -231,13 +183,15 @@ ExampleApp::Run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		this->window->Update();
 
-		camera.AddPos(Vector(0, 0, -0.001));
-		//camera.SetRot(RotationY(0.01 * i));
+		//camera.AddPos(Vector(0, 0, -0.001));
+		camera.SetRot(RotationY(0.01 * i));
 
 		glUseProgram(this->program);
 		// Calling the shader and giving it a new value to use as matrix.
-		glUniformMatrix4fv(matrixLoc, 1, true, (camera.GetVPMatrix()  * RotationY(0.01 * i)).data2);
+		glUniformMatrix4fv(matrixLoc, 1, true, (camera.GetVPMatrix()  * RotationY(0)).data2);
+        tr.BindTexture();
 		mr.Render();
+        tr.UnbindTexture();
 
 		// Incrementing position and rotation variables
 		i++;
