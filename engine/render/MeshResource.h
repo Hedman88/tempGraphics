@@ -1,7 +1,7 @@
 #pragma once
 #include "core/mathLib.h"
 #include "GL/glew.h"
-
+//
 struct Vertex
 {
 	Vector pos;
