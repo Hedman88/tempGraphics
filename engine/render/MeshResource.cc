@@ -29,9 +29,10 @@ void MeshResource::Render() {
 	glDrawElements(GL_TRIANGLES, ibsize, GL_UNSIGNED_INT, NULL);
 }
 
-MeshResource MeshResource::Cube() {
+std::shared_ptr<MeshResource> MeshResource::Cube() {
 
-    MeshResource cube = MeshResource();
+    //MeshResource cube = MeshResource();
+    std::shared_ptr<MeshResource> cube(new MeshResource());
 	Vertex vertices[24] = {	
 		// Front
 		Vertex{Vector(-0.5, -0.5, 0.5), Vector(1,0,0,1), {0.5, 0.75}},
@@ -89,6 +90,6 @@ MeshResource MeshResource::Cube() {
 		Index{20,21,23},
 		Index{20,22,23}
 	};
-	cube.UploadToGPU(vertices, 24, indices, 12);
+	cube->UploadToGPU(vertices, 24, indices, 12);
     return cube;
 }

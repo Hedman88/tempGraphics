@@ -5,7 +5,6 @@
 class TextureResource
 {
     GLuint texture;
-    const char* filename;
 public:
     ~TextureResource();
     void BindTexture();

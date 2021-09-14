@@ -152,7 +152,7 @@ ExampleApp::Run()
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-	MeshResource mr = MeshResource().Cube();
+	//MeshResource mr = MeshResource().Cube();
     TextureResource tr = TextureResource();
     tr.LoadFromFile("../../../assets/textures/diceTexture.png");
 
@@ -190,7 +190,7 @@ ExampleApp::Run()
 		// Calling the shader and giving it a new value to use as matrix.
 		glUniformMatrix4fv(matrixLoc, 1, true, (camera.GetVPMatrix()  * RotationY(0)).data2);
         tr.BindTexture();
-		mr.Render();
+		//mr.Render();
         tr.UnbindTexture();
 
 		// Incrementing position and rotation variables

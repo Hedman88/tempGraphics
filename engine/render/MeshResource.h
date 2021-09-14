@@ -1,6 +1,7 @@
 #pragma once
 #include "core/mathLib.h"
 #include "GL/glew.h"
+#include <memory>
 
 struct Vertex
 {
@@ -25,5 +26,5 @@ class MeshResource
 public:
 	void UploadToGPU(Vertex vertices[], int size, Index indices[], int size2);
 	void Render();
-    MeshResource Cube();
+    static std::shared_ptr<MeshResource> Cube();
 };
