@@ -13,32 +13,6 @@
 #include "core/mathLib.h"
 #include "stb_image.h"
 
-const GLchar* vs =
-"#version 430\n"
-"layout(location=0) in vec4 pos;\n"
-"layout(location=1) in vec4 color;\n"
-"layout(location=2) in vec2 uvIn;\n"
-"layout(location=0) out vec4 Color;\n"
-"layout(location=1) out vec2 uvOut;\n"
-"uniform mat4 matrix;\n"
-"void main()\n"
-"{\n"
-"	gl_Position = matrix * pos;\n"
-"	Color = color;\n"
-"   uvOut = uvIn;\n"
-"}\n";
-
-const GLchar* ps =
-"#version 430\n"
-"layout(location=0) in vec4 color;\n"
-"layout(location=1) in vec2 uvIn;\n"
-"out vec4 Color;\n"
-"uniform sampler2D image;\n"
-"void main()\n"
-"{\n"
-"	Color = texture(image, uvIn);\n"
-"}\n";
-
 using namespace Display;
 namespace Example
 {
