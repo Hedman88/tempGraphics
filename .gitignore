@@ -355,3 +355,4 @@ build/
 html/
 latex/
 tags
+.vscode/
