@@ -75,14 +75,6 @@ int ShaderResource::LoadShaders(const char* vShaderPath, const char* pShaderPath
     return 0;
 }
 
-//void ShaderResource::LoadPixelShader(const char* filename){
-//    //Do stuff
-//}
-
-void ShaderResource::CompileShaders(){
-    //Useless function?
-}
-
 void ShaderResource::ActivateShaders(){
     glUseProgram(this->program);
 }
@@ -92,9 +84,13 @@ void ShaderResource::SetMatrix(const std::string &name, float* matrix) const{
 }
 
 void ShaderResource::SetVector4(const std::string &name, Vector vec) const{
-    glUniform4f(glGetUniformLocation(this->program, name.c_str()), vec.x, vec.y, vec.z, vec.w);
+    glUniform4fv(glGetUniformLocation(this->program, name.c_str()), 1, vec.arr);
 }
 
 void ShaderResource::BindSampler(const std::string &name, int index) const{
     glUniform1i(glGetUniformLocation(this->program, name.c_str()), index);
+}
+
+void ShaderResource::SetFloat(const std::string &name, float flo) const{
+    glUniform1f(glGetUniformLocation(this->program, name.c_str()), flo);
 }

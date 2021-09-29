@@ -19,6 +19,9 @@ Camera::Camera(float FOV, float width, float height, float near, float far) {
 void Camera::SetPos(Vector newPos) {
 	this->pos = newPos;
 }
+Vector Camera::GetPos(){
+    return this->pos;
+}
 
 void Camera::AddPos(Vector addedPos) {
 	this->pos.x = this->pos.x + addedPos.x;
@@ -35,7 +38,7 @@ void Camera::AddRot(Matrix addedRot) {
 }
 
 Matrix Camera::GetVPMatrix() {
-	Matrix temp = PositionMat(Vector(0,0,-2)) * this->rot * PositionMat(this->pos);
+	Matrix temp = PositionMat(Vector(0,0,-5)) * this->rot * PositionMat(this->pos);
 	temp = this->P * temp;
 	return temp;
 }

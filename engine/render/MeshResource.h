@@ -8,6 +8,7 @@ struct Vertex
 	Vector pos;
 	Vector color;
     float uv[2];
+    Vector normal;
 };
 
 struct Index
@@ -27,4 +28,6 @@ public:
 	void UploadToGPU(Vertex vertices[], int size, Index indices[], int size2);
 	void Render();
     static std::shared_ptr<MeshResource> Cube();
+    static std::shared_ptr<MeshResource> LoadObj(const char* filePath);
+    static std::shared_ptr<MeshResource> PointLightCube(Vector color);
 };

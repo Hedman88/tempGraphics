@@ -166,7 +166,7 @@ ExampleApp::Run()
         if(this->down) modelPos.y -= moveSpeed;
         if(this->right) modelPos.x += moveSpeed;
 
-        gNode.Draw(camera.GetVPMatrix() * PositionMat(modelPos) * RotationY(mouseRot));
+        gNode.Draw(camera.GetVPMatrix(), PositionMat(modelPos) * RotationY(mouseRot));
 
 		this->window->SwapBuffers();
 	}
