@@ -167,7 +167,7 @@ ExampleApp::Run()
     float mouseRot = 0.0;
     // The additive position vector for the model
     Vector modelPos = Vector(0,0,0,1);
-    // How fast will the cube move?
+    // How fast will the model move?
     float moveSpeed = 0.05;
 
     int i = 0;
