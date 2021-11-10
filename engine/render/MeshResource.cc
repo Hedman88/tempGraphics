@@ -299,3 +299,8 @@ std::shared_ptr<MeshResource> MeshResource::PointLightCube(Vector color){
 	light->UploadToGPU(vertices, 24, indices, 12);
     return light;
 }
+
+MeshResource::~MeshResource(){
+    glDeleteBuffers(1, &this->vertexBufferHandle);
+    glDeleteBuffers(1, &this->indexBufferHandle);
+}

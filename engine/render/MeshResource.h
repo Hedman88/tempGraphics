@@ -25,6 +25,7 @@ class MeshResource
 	int vbsize;
 	int ibsize;
 public:
+    ~MeshResource();
 	void UploadToGPU(Vertex vertices[], int size, Index indices[], int size2);
 	void Render();
     static std::shared_ptr<MeshResource> Cube();

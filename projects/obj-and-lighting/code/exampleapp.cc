@@ -146,15 +146,20 @@ ExampleApp::Run()
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
-    const char* vsPath = "../../../engine/render/VertexShader.ascii";
-    const char* psPath = "../../../engine/render/PixelShader.ascii";
-    const char* texturePath = "../../../assets/textures/grey.png";
-    const char* objPath = "../../../assets/models/Wolf.obj";
-    GraphicsNode gNode(objPath);
-    gNode.InitNode(vsPath, psPath, texturePath);
+    const char* vsPath = "engine/render/VertexShader.ascii";
+    const char* psPath = "engine/render/PixelShader.ascii";
+    const char* texturePath = "assets/textures/grey.png";
+    const char* objPath = "assets/models/Wolf.obj";
+    std::shared_ptr<MeshResource> mr = MeshResource::LoadObj(objPath);
+    std::shared_ptr<TextureResource> tr = std::make_shared<TextureResource>();
+    std::shared_ptr<ShaderResource> sr = std::make_shared<ShaderResource>();
+    tr->LoadFromFile(texturePath);
+    sr->LoadShaders(vsPath, psPath);
+    GraphicsNode gNode;
+    gNode.InitNode(mr, tr, sr);
 
-    const char* lvsPath = "../../../engine/render/PointLightVS.ascii";
-    const char* lpsPath = "../../../engine/render/PointLightPS.ascii";
+    const char* lvsPath = "engine/render/PointLightVS.ascii";
+    const char* lpsPath = "engine/render/PointLightPS.ascii";
     PointLightNode lightNode(Vector(0,1,0), Vector(1,1,1,1), 1);
     lightNode.InitNode(lvsPath, lpsPath);
     lightNode.SetSharedShader(gNode.GetSR());

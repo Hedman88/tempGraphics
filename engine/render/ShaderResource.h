@@ -10,6 +10,7 @@ class ShaderResource
     const GLchar* vertexShaderCodeChar;
     const GLchar* pixelShaderCodeChar;
   public:
+    ~ShaderResource();
     int LoadShaders(const char* vShaderPath, const char* pShaderPath);
     void ActivateShaders();
     void SetMatrix(const std::string &name, float* matrix) const;

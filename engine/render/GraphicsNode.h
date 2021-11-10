@@ -12,9 +12,7 @@ class GraphicsNode
     std::shared_ptr<ShaderResource> sr;
 
   public:
-    GraphicsNode();
-    GraphicsNode(const char* objPath);
-    void InitNode(const char* vShaderFile, const char* pShaderFile, const char* textureFile);
+    void InitNode(std::shared_ptr<MeshResource> mr, std::shared_ptr<TextureResource> tr, std::shared_ptr<ShaderResource> sr);
     void Draw(Matrix cameraVPMatrix, Matrix modelMatrix);
 
     std::shared_ptr<MeshResource> GetMR();

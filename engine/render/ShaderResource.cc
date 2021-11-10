@@ -94,3 +94,7 @@ void ShaderResource::BindSampler(const std::string &name, int index) const{
 void ShaderResource::SetFloat(const std::string &name, float flo) const{
     glUniform1f(glGetUniformLocation(this->program, name.c_str()), flo);
 }
+
+ShaderResource::~ShaderResource(){
+    glDeleteProgram(this->program);
+}

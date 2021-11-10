@@ -135,8 +135,16 @@ ExampleApp::Run()
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 
+    const char* vsPath = "engine/render/VertexShader.ascii";
+    const char* psPath = "engine/render/PixelShader.ascii";
+    const char* texturePath = "assets/textures/diceTexture.png";
+    std::shared_ptr<MeshResource> mr = MeshResource::Cube();
+    std::shared_ptr<TextureResource> tr;
+    std::shared_ptr<ShaderResource> sr;
+    tr->LoadFromFile(texturePath);
+    sr->LoadShaders(vsPath, psPath);
     GraphicsNode gNode;
-    gNode.InitNode("../../../engine/render/VertexShader.ascii", "../../../engine/render/PixelShader.ascii", "../../../assets/textures/diceTexture.png");
+    gNode.InitNode(mr, tr, sr);
 
 	int width, height;
 	window->GetSize(width, height);

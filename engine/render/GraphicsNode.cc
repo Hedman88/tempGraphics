@@ -1,23 +1,10 @@
 #include "GraphicsNode.h"
 #include <cstring>
 
-GraphicsNode::GraphicsNode(){
-    this->mr = MeshResource::Cube();
-    this->tr.reset(new TextureResource());
-    this->sr.reset(new ShaderResource());
-}
-
-GraphicsNode::GraphicsNode(const char* objPath){
-    this->mr = MeshResource::LoadObj(objPath);
-    this->tr.reset(new TextureResource());
-    this->sr.reset(new ShaderResource());
-}
-
-void GraphicsNode::InitNode(const char* vShaderFile, const char* pShaderFile, const char* textureFile){
-    this->sr->LoadShaders(vShaderFile, pShaderFile);
-    if(strcmp(textureFile, "") != 0){
-        this->tr->LoadFromFile(textureFile);
-    }
+void GraphicsNode::InitNode(std::shared_ptr<MeshResource> mr, std::shared_ptr<TextureResource> tr, std::shared_ptr<ShaderResource> sr){
+    this->mr = mr;
+    this->tr = tr;
+    this->sr = sr;
 }
 
 void GraphicsNode::Draw(Matrix cameraVPMatrix, Matrix modelMatrix){
